@@ -23,7 +23,7 @@ func _process(delta):
 	pass
 
 func _physics_process(delta):
-	var velocity = Vector2.ZERO
+	velocity = Vector2.ZERO
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
 	if Input.is_action_pressed("move_down"):
@@ -33,4 +33,4 @@ func _physics_process(delta):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		
-	var collision = move_and_collide(velocity * delta)
+	move_and_collide(velocity * delta)
