@@ -1,4 +1,5 @@
-extends Node2D
+extends CharacterBody2D
+# Make sure we extend from the correct node!!!
 
 signal hit
 
@@ -13,11 +14,15 @@ func _ready():
 	
 	# starting position
 	var y_position = screen_size.y
-	position = Vector2(100, y_position / 2)
+	position = Vector2(50, y_position / 2)
+	
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	pass
+
+func _physics_process(delta):
 	var velocity = Vector2.ZERO
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
@@ -28,6 +33,4 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		
-	# Update the actual position of the paddle
-	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
+	var collision = move_and_collide(velocity * delta)
