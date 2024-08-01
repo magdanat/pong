@@ -4,18 +4,19 @@
 [ext_resource type="Texture2D" uid="uid://bypxto7kt2jub" path="res://assets/ball.png" id="1_pucdh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4cafj"]
-radius = 45.0111
+radius = 6.08276
 
 [node name="Ball" type="RigidBody2D"]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 11
 gravity_scale = 0.0
 contact_monitor = true
 script = ExtResource("1_d8bqf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.98023e-08, 2.98023e-08)
+scale = Vector2(0.132188, 0.132188)
 texture = ExtResource("1_pucdh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 1)
 shape = SubResource("CircleShape2D_4cafj")
