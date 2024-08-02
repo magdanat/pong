@@ -1,16 +1,24 @@
-[gd_scene load_steps=7 format=3 uid="uid://hl2lmwjoj2od"]
+[gd_scene load_steps=10 format=3 uid="uid://hl2lmwjoj2od"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_6i58c"]
 [ext_resource type="PackedScene" uid="uid://dfg2q7e1p4f0u" path="res://paddle.tscn" id="1_v41mf"]
 [ext_resource type="Texture2D" uid="uid://heyxqnhwetoa" path="res://assets/border_wall.png" id="2_esnb8"]
-[ext_resource type="PackedScene" uid="uid://crbrnomkqlbqy" path="res://ball.tscn" id="3_qxsmb"]
+[ext_resource type="PackedScene" uid="uid://crbrnomkqlbqy" path="res://ball.tscn" id="2_jfspu"]
 [ext_resource type="PackedScene" uid="uid://bo5bewcoraxoh" path="res://enemy_paddle.tscn" id="4_3vw5b"]
+[ext_resource type="Script" path="res://HUD.gd" id="6_31hqb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vtmsl"]
 size = Vector2(1152, 10)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6opaw"]
+size = Vector2(20, 648)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ej7ia"]
+size = Vector2(20, 648)
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_6i58c")
+ball_scene = ExtResource("2_jfspu")
 
 [node name="Paddle" parent="." instance=ExtResource("1_v41mf")]
 position = Vector2(553, 291)
@@ -29,9 +37,6 @@ position = Vector2(576, -5)
 scale = Vector2(5.76, 0.05)
 texture = ExtResource("2_esnb8")
 
-[node name="Ball" parent="." instance=ExtResource("3_qxsmb")]
-position = Vector2(348, 270)
-
 [node name="Border2" type="StaticBody2D" parent="."]
 light_mask = 6
 collision_mask = 6
@@ -47,3 +52,51 @@ scale = Vector2(5.76, 0.05)
 texture = ExtResource("2_esnb8")
 
 [node name="EnemyPaddle" parent="." instance=ExtResource("4_3vw5b")]
+position = Vector2(507, 291)
+
+[node name="PlayerGoal" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGoal"]
+position = Vector2(-10, 324)
+shape = SubResource("RectangleShape2D_6opaw")
+
+[node name="EnemyGoal" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyGoal"]
+position = Vector2(1162, 324)
+shape = SubResource("RectangleShape2D_ej7ia")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("6_31hqb")
+
+[node name="PlayerScore" type="Label" parent="HUD"]
+offset_left = 536.0
+offset_top = 8.0
+offset_right = 576.0
+offset_bottom = 34.0
+size_flags_horizontal = 0
+text = "0
+"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="EnemyScore" type="Label" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 8.0
+offset_right = 40.0
+offset_bottom = 34.0
+grow_horizontal = 2
+text = "0
+"
+horizontal_alignment = 1
+
+[connection signal="roundEnd" from="." to="EnemyPaddle" method="_on_main_round_end"]
+[connection signal="roundStart" from="." to="EnemyPaddle" method="_on_main_round_start"]
+[connection signal="body_entered" from="PlayerGoal" to="." method="_on_player_goal_body_entered"]
+[connection signal="body_entered" from="EnemyGoal" to="." method="_on_enemy_goal_body_entered"]

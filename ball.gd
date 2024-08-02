@@ -5,12 +5,12 @@ extends RigidBody2D
 
 # Initial speed of the ball
 var initial_speed = 100
-
 # Offset for ball spawn on y-axis
 var y_offset = 100
-
 # Used to determine where it spawns
 var rng = RandomNumberGenerator.new()
+
+var lastScorer
 
 # Called when the node enters the scene tree for the first time.
 # Ideally we will instantiate the ball on the start of a game and a few seconds
@@ -23,17 +23,18 @@ func _ready():
 	
 	# initial position
 	position = Vector2(screen_size.x / 2, rng.randf_range(0 + y_offset, screen_size.y - y_offset))
+	collision_coords = Vector2(position.x, position.y)
+	lastScorer = get_parent().lastScored
 	
-	var direction = 0
-	# if the player scored...go left
-	# if the ai scored...go right
-	
-	# both checks failed, so give a random velocity
-	velocity = Vector2(direction, rng.randf_range(0, 100))
+	var direction = rng.randf_range(-400, 400)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+	if lastScorer == 1:
+		direction = rng.randf_range(-400, 0)
+	elif lastScorer == 2:
+		direction = rng.randf_range(0, 400)
+	
+	velocity = Vector2(direction * 2, rng.randf_range(0, 100))
+	print("Spawned ball velocity is..." + str(velocity.x))
 
 func _physics_process(delta):
 	var collision = move_and_collide(velocity * delta)
