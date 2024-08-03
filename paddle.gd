@@ -22,7 +22,7 @@ func _ready():
 func _process(delta):
 	pass
 
-func _physics_process(delta):
+func _physics_process(delta):	
 	velocity = Vector2.ZERO
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1

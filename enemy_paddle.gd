@@ -1,8 +1,6 @@
 extends RigidBody2D
 
-@export var speed = 100
-
-# Shorthand for doing the work inside _ready() function
+@export var speed = 400
 @onready var paddle_size = get_node("CollisionShape2D").shape.size
 
 var screen_size
@@ -46,10 +44,7 @@ func _physics_process(delta):
 	move_and_collide(velocity * delta)
 
 func _on_main_round_start():
-	print("Round started")
 	ball = get_parent().get_node("Ball")
-	print(ball)
 
 func _on_main_round_end():
 	ball = null
-	print("Round ended")

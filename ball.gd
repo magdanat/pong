@@ -9,15 +9,8 @@ var initial_speed = 100
 var y_offset = 100
 # Used to determine where it spawns
 var rng = RandomNumberGenerator.new()
-
 var lastScorer
 
-# Called when the node enters the scene tree for the first time.
-# Ideally we will instantiate the ball on the start of a game and a few seconds
-# after someone scores
-# At the start of a new game, the ball will be given a randomly velocity
-# Once someone scores, the ball will go towards the person who was scored against
-# to give them the first hit
 func _ready():
 	var screen_size = get_viewport_rect().size
 	
@@ -29,18 +22,24 @@ func _ready():
 	var direction = rng.randf_range(-400, 400)
 
 	if lastScorer == 1:
-		direction = rng.randf_range(-400, 0)
+		direction = rng.randf_range(-400, -300)
 	elif lastScorer == 2:
-		direction = rng.randf_range(0, 400)
+		direction = rng.randf_range(300, 400)
 	
-	velocity = Vector2(direction * 2, rng.randf_range(0, 100))
-	print("Spawned ball velocity is..." + str(velocity.x))
+	velocity = Vector2(direction * 2.2, rng.randf_range(25, 100))
 
 func _physics_process(delta):
 	var collision = move_and_collide(velocity * delta)
 	if collision:
+		var collider = collision.get_collider()
 		collision_coords = Vector2(position.x, position.y)
-		var collision_normal = collision.get_normal()
-		var reflect = collision.get_remainder().bounce(collision_normal)
-		velocity = velocity.bounce(collision_normal)
-		move_and_collide(reflect)
+		if (collider.is_in_group("Paddles")):
+			var paddlePosition = collider.position
+			var relativeBallPosition = collision_coords - paddlePosition
+			velocity = relativeBallPosition.normalized() * rng.randf_range(600, 1000)
+			move_and_collide(velocity * delta)
+		else: 
+			var collision_normal = collision.get_normal()
+			var reflect = collision.get_remainder().bounce(collision_normal)
+			velocity = velocity.bounce(collision_normal)
+			move_and_collide(reflect)

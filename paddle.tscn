@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7wac1"]
 size = Vector2(20, 60)
 
-[node name="Paddle" type="CharacterBody2D"]
+[node name="Paddle" type="CharacterBody2D" groups=["Paddles"]]
 light_mask = 5
 visibility_layer = 2
 collision_layer = 2
@@ -15,9 +15,10 @@ motion_mode = 1
 script = ExtResource("1_0ophy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 0)
 shape = SubResource("RectangleShape2D_7wac1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.025, 0.1)
 texture = ExtResource("2_7tkn7")
-metadata/_edit_group_ = true
+metadata/_edit_lock_ = true

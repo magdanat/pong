@@ -8,7 +8,7 @@ signal roundEnd
 @export var enemyScore = 0
 @export var lastScored = 0
 
-var winningScore = 10
+var winningScore = 2
 var ball
 
 var playerScored = false
@@ -17,10 +17,6 @@ var playerScored = false
 func _ready():
 	new_round()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-	
 # Should spawn a new ball in the middle of the arena
 func new_round():
 	ball = ball_scene.instantiate()
@@ -29,27 +25,29 @@ func new_round():
 
 func _on_player_goal_body_entered(body):
 	removeBall()
-	playerScore += 1
-	lastScored = 1
-	$HUD.update_player_score(playerScore)
-	checkScore()
-
-func _on_enemy_goal_body_entered(body):
-	removeBall()
 	enemyScore += 1
 	lastScored = 2
 	$HUD.update_enemy_score(enemyScore)
 	checkScore()
 
+func _on_enemy_goal_body_entered(body):
+	removeBall()
+	playerScore += 1
+	lastScored = 1
+	$HUD.update_player_score(playerScore)
+	checkScore()
+
 func checkScore():
 	if playerScore == winningScore:
-		print("Player won")
+		endGame("Player")
 	elif enemyScore == winningScore:
-		print("Enemy won")
+		endGame("Enemy")
 	elif (playerScore < winningScore || enemyScore < winningScore):
-		# Neither player or enemy has won yet
 		new_round()
 
 func removeBall():
 	ball.free()
 	roundEnd.emit()
+
+func endGame(victor):
+	print(victor + " won")

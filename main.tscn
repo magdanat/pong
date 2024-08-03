@@ -73,10 +73,10 @@ shape = SubResource("RectangleShape2D_ej7ia")
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("6_31hqb")
 
-[node name="PlayerScore" type="Label" parent="HUD"]
-offset_left = 536.0
+[node name="EnemyScore" type="Label" parent="HUD"]
+offset_left = 576.0
 offset_top = 8.0
-offset_right = 576.0
+offset_right = 616.0
 offset_bottom = 34.0
 size_flags_horizontal = 0
 text = "0
@@ -84,12 +84,12 @@ text = "0
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="EnemyScore" type="Label" parent="HUD"]
+[node name="PlayerScore" type="Label" parent="HUD"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
+offset_left = -40.0
 offset_top = 8.0
-offset_right = 40.0
 offset_bottom = 34.0
 grow_horizontal = 2
 text = "0
